@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
+using System.Numerics;
+
 
 namespace Projekt22
 {
@@ -14,30 +16,54 @@ namespace Projekt22
     {
         static void Main(string[] args)
         {
+            BigInteger[] tab = new BigInteger[8];
+            
+            tab[0] = 100913;
+            tab[1] = 1009139;
+            tab[2] = 10091401;
+            tab[3] = 100914061;
+            tab[4] = 1009140611;
+            tab[5] = 10091406133;
+            tab[6] = 100914061337;
+            tab[7] = 1009140613399;
+            
 
-            int[] tab = new int[6];
-            tab[0] = 1;
-            tab[1] = 100913;
-            tab[2] = 1009139;
-            tab[3] = 10091401;
-            tab[4] = 100914061;
-            tab[5] = 1009140611;
+            var czasProgramu = new Stopwatch();
+            czasProgramu.Start();
+            string typAlgorytmu = "Algorytm przyzwoity, pomiar czasu";
+            string nazwaPliku = typAlgorytmu + ".csv";
 
-            var pomiar = new Stopwatch();
-            List<long> pierwsze = new List<long>();
+            AddRecord(typAlgorytmu, nazwaPliku);
 
-            for (int t = 1; t <= 4; t++)
+            for (int t = 0; t <= 7; t++)  
             {
-                Console.WriteLine("Sprawdzam liczbę: " + tab[t]);
-                string typ = "Liczba " + tab[t];
-             
+                IsPrime(tab[t], nazwaPliku);     
+            }
 
-                pomiar.Start();
+            czasProgramu.Stop();
+            BigInteger pomiarCalkowityResult = czasProgramu.ElapsedMilliseconds;
+            pomiarCalkowityResult.ToString();
+            Console.WriteLine("Zakonczono dzialanie programu. Czas dzialania programu to: " + pomiarCalkowityResult);
 
-                for (long i = tab[t-1]; i < tab[t]; i++)
+            Console.ReadKey();  
+        }
+
+
+        public static void IsPrime(BigInteger liczba, string nazwaPliku)
+        {
+            
+            string isPrime;
+            var pomiarJednostkowy = new Stopwatch();
+            
+            
+            pomiarJednostkowy.Start();
+
+                BigInteger i = liczba;
                 {
+
                     bool pierwsza = true;
-                    for (long n = 2; n < i; n++)
+
+                for (BigInteger n = 2; n*n <= i; n++) 
                     {
                         if (i % n == 0)
                         {
@@ -45,26 +71,25 @@ namespace Projekt22
                             break;
                         }
                     }
-                    if (pierwsza)
+                    if (pierwsza == true)
                     {
-                        pierwsze.Add(i);
+                        isPrime = "Jest to liczba pierwsza";
                     }
-                  
-                }
-                pomiar.Stop();
-                long pomiarresult = pomiar.ElapsedMilliseconds;
-                pomiarresult.ToString();
-                Console.WriteLine("Zakończono sprawdzanie liczby " + tab[t]+". Czas: " + pomiarresult+"ms. Łącznie znalezionio "+pierwsze.Count + " liczb pierwszych");
-                addRecord("", tab[t], ";", pomiarresult, "Pomiar.csv");
-                pomiar.Reset();
-                pierwsze.Clear();
-                
-            }
-            Console.WriteLine("Zakonczono dzialanie programu.");
-            Console.ReadKey();
+                    else
+                    {
+                        isPrime = "Nie jest to liczba pierwsza";
+                    }
 
+                    pomiarJednostkowy.Stop();
+                    BigInteger pomiarJednostkowyResult = pomiarJednostkowy.ElapsedMilliseconds;
+                    pomiarJednostkowyResult.ToString();
+                    Console.WriteLine("Zakończono sprawdzanie liczby " + liczba + ". Czas: " + pomiarJednostkowyResult + "ms. " + isPrime);
+                    AddRecord("", liczba, ";", pomiarJednostkowyResult, nazwaPliku);
+                    pomiarJednostkowy.Reset();
+                }  
         }
-        public static void addRecord(string typ, string filepath)
+
+        public static void AddRecord(string typ, string filepath)
         {
             try
             {
@@ -80,7 +105,7 @@ namespace Projekt22
             }
         }
 
-        public static void addRecord(string nazwa, int tabela, string przerwa, long czas, string filepath)
+        public static void AddRecord(string nazwa, BigInteger tabela, string przerwa, BigInteger czas, string filepath)
         {
             try
             {
