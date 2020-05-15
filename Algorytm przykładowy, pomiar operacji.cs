@@ -10,7 +10,7 @@ using System.IO;
 using System.Numerics;
 
 
-namespace ConsoleApp21
+namespace Projekt22
 {
     class Program
     {
@@ -30,20 +30,21 @@ namespace ConsoleApp21
 
             var czasProgramu = new Stopwatch();
             czasProgramu.Start();
-            string typAlgorytmu = "Algorytm przyzwoity, pomiar czasu";
+            string typAlgorytmu = "Algorytm przykładowy, pomiar operacji";
             string nazwaPliku = typAlgorytmu + ".csv";
-
+            
             AddRecord(typAlgorytmu, nazwaPliku);
 
             for (int t = 0; t <= 7; t++)
             {
                 IsPrime(tab[t], nazwaPliku);
+               
             }
 
             czasProgramu.Stop();
             BigInteger pomiarCalkowityResult = czasProgramu.ElapsedMilliseconds;
             pomiarCalkowityResult.ToString();
-            Console.WriteLine("Zakonczono dzialanie programu. Czas dzialania programu to: " + pomiarCalkowityResult + "ms");
+            Console.WriteLine("Zakonczono dzialanie programu. Czas dzialania programu to: " + pomiarCalkowityResult + "ms.");
 
             Console.ReadKey();
         }
@@ -51,43 +52,38 @@ namespace ConsoleApp21
 
         public static void IsPrime(BigInteger liczba, string nazwaPliku)
         {
-
-            string isPrime ="default";
-            var pomiarJednostkowy = new Stopwatch();
-
-
-            pomiarJednostkowy.Start();
-
+            string isPrime = "default";
+            
             BigInteger i = liczba;
-            
+            BigInteger iloscOperacji = 0;
+            bool pierwsza = true;
 
-                bool pierwsza = true;
-
-                for (BigInteger n = 2; n * n <= i; n++)
+            for (BigInteger n = 2; n < i / 2; n += 2)
+            {
+                if (i % n == 0)
                 {
-                    if (i % n == 0)
-                    {
-                        pierwsza = false;
-                        break;
-                    }
-
-                    if (pierwsza == true)
-                    {
-                        isPrime = "Jest to liczba pierwsza.";
-                    }
-                    else
-                    {
-                        isPrime = "Nie jest to liczba pierwsza.";
-                    }
+                    pierwsza = false;
+                    iloscOperacji++;
+                    break;
                 }
+                if (pierwsza == true)
+                {
+                    isPrime = "Jest to liczba pierwsza.";
+                    iloscOperacji++;
+                }
+                else
+                {
+                    isPrime = "Nie jest to liczba pierwsza.";
+                    iloscOperacji++;
+                }
+            }
 
-                pomiarJednostkowy.Stop();
-                BigInteger pomiarJednostkowyResult = pomiarJednostkowy.ElapsedMilliseconds;
+               BigInteger pomiarJednostkowyResult = iloscOperacji;
                 pomiarJednostkowyResult.ToString();
-                Console.WriteLine("Zakończono sprawdzanie liczby " + liczba + ". Czas: " + pomiarJednostkowyResult + "ms. " + isPrime);
+                Console.WriteLine("Zakończono sprawdzanie liczby " + liczba + ". Liczba operacji: " + pomiarJednostkowyResult + ". " + isPrime);
                 AddRecord("", liczba, ";", pomiarJednostkowyResult, nazwaPliku);
-                pomiarJednostkowy.Reset();
-            
+
+            iloscOperacji = 0;
         }
 
         public static void AddRecord(string typ, string filepath)
@@ -124,5 +120,3 @@ namespace ConsoleApp21
 
     }
 }
-
-

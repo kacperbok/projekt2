@@ -30,7 +30,7 @@ namespace ConsoleApp21
 
             var czasProgramu = new Stopwatch();
             czasProgramu.Start();
-            string typAlgorytmu = "Algorytm przyzwoity, pomiar czasu";
+            string typAlgorytmu = "Algorytm przykładowy, pomiar czasu";
             string nazwaPliku = typAlgorytmu + ".csv";
 
             AddRecord(typAlgorytmu, nazwaPliku);
@@ -63,7 +63,7 @@ namespace ConsoleApp21
 
                 bool pierwsza = true;
 
-                for (BigInteger n = 2; n * n <= i; n++)
+                for (BigInteger n = 2; n / 2 <= i; n+=2)
                 {
                     if (i % n == 0)
                     {
